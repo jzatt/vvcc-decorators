@@ -1,0 +1,27 @@
+{
+  "name": "vvcc-decorators",
+  "version": "1.0.0",
+  "description": "Simple Vue Class Decorator decorators for Vuex",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzatt/vvcc-decorators.git"
+  },
+  "keywords": [
+    "vuex",
+    "typescript",
+    "vue"
+  ],
+  "author": "jzatt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jzatt/vvcc-decorators/issues"
+  },
+  "homepage": "https://github.com/jzatt/vvcc-decorators#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.129"
+  },
+  "dependencies": {
+    "vue-class-component": "^7.1.0"
+  }
+}
