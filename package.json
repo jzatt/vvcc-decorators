@@ -1,6 +1,6 @@
 {
   "name": "vvcc-decorators",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple Vue Class Decorator decorators for Vuex",
   "main": "index.ts",
   "repository": {
@@ -10,7 +10,8 @@
   "keywords": [
     "vuex",
     "typescript",
-    "vue"
+    "vue",
+    "decorators"
   ],
   "author": "jzatt",
   "license": "MIT",
