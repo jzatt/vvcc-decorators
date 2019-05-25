@@ -36,9 +36,9 @@ An object containing `namespace` and/or `key`
 
 The Vuex namespace.
 
-**Name** `string`
+**Key** `string`
 
-The actual name of the Vuex action, mutation or state variable.
+The actual name of the Vuex action, getter, mutation or state variable.
 
 **Alias** `string`
 
