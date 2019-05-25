@@ -1,46 +1,79 @@
 import { createDecorator } from 'vue-class-component'
 import _get from 'lodash/get'
 
-const objectPath = (namespace: string, key: string, name?: string) => {
-  const base = namespace.replace('/', '.')
-  return name ? `${base}.${name}` : `${base}.${key}`
+interface DecoratorArgs {
+  namespace?: string
+  key?: string
 }
 
-const functionPath = (namespace: string, key: string, name?: string) => {
-  const base = namespace
-  return name ? `${base}/${name}` : `${base}/${key}`
+const defineArgs = (
+  args?: DecoratorArgs | string,
+  key?: string
+): DecoratorArgs => {
+  if (args && typeof args !== 'string') {
+    return args
+  }
+  return {
+    namespace: args,
+    key: key,
+  }
 }
 
-function storeMethod(type: string, namespace: string, name?: string) {
+const setPath = (key: string, args: DecoratorArgs) => {
+  const namespace = args.namespace || null
+  const endpoint = args.key || key
+
+  return namespace ? `${namespace}/${endpoint}` : endpoint
+}
+
+function method(type: string, args?: DecoratorArgs | string, key?: string) {
+  const decoratorArgs = defineArgs(args, key)
+
   return createDecorator((options: any, key: any) => {
     if (!options.methods) options.methods = {}
 
     options.methods[key] = function(payload: any): string {
-      return this.$store[type](functionPath(namespace, key, name), payload)
+      return this.$store[type](setPath(key, decoratorArgs), payload)
     }
   })
 }
 
-export function State(namespace: string, name?: string) {
-  return createDecorator((options: any, key: any) => {
+function computed(type: string, args?: DecoratorArgs | string, key?: string) {
+  const decoratorArgs = defineArgs(args, key)
+
+  return createDecorator((options: any, key: string) => {
     if (!options.computed) options.computed = {}
 
+    const path = setPath(key, decoratorArgs)
     options.computed[key] = function() {
-      return _get(this.$store.state, objectPath(namespace, key, name))
+      if (type === 'state') {
+        return _get(this.$store.state, path.replace('/', '.'))
+      } else {
+        return this.$store.getters[path]
+      }
     }
   })
 }
 
-export function Action(namespace: string, name?: string) {
-  return storeMethod('dispatch', namespace, name)
+export function State(args?: DecoratorArgs | string, key?: string) {
+  return computed('state', args, key)
 }
 
-export function Mutation(namespace: string, name?: string) {
-  return storeMethod('commit', namespace, name)
+export function Getter(args?: DecoratorArgs | string, key?: string) {
+  return computed('getter', args, key)
+}
+
+export function Action(args?: DecoratorArgs | string, key?: string) {
+  return method('dispatch', args, key)
+}
+
+export function Mutation(args?: DecoratorArgs | string, key?: string) {
+  return method('commit', args, key)
 }
 
 export default {
   State,
   Action,
+  Getter,
   Mutation,
 }
