@@ -40,7 +40,7 @@ The Vuex namespace.
 
 The actual name of the Vuex action, getter, mutation or state variable.
 
-**Alias** `string`
+**Alias** `string` _(mandatory)_
 
 If the key is entered in the decorator options, you can use whatever alias you want your property to be called locally in your component. If the key is omittied the alias **must** match a Vuex action, getter, mutation or state name.
 

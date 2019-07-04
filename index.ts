@@ -14,7 +14,7 @@ const defineArgs = (
     return args
   }
   return {
-    namespace: args,
+    namespace: <string>args,
     key: key,
   }
 }
@@ -46,11 +46,9 @@ function computed(type: string, args?: DecoratorArgs | string, key?: string) {
 
     const path = setPath(key, decoratorArgs)
     options.computed[key] = function() {
-      if (type === 'state') {
-        return _get(this.$store.state, path.replace('/', '.'))
-      } else {
-        return this.$store.getters[path]
-      }
+      return type === 'state'
+        ? _get(this.$store.state, path.replace('/', '.'))
+        : this.$store.getters[path]
     }
   })
 }
